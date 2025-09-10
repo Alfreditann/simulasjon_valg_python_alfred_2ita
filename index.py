@@ -41,3 +41,4 @@ def valget():
         print("ugyldig parti")
 valget()
 show_leaderboard()
+#test
