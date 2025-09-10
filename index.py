@@ -1,6 +1,7 @@
 import json
 import os 
 leaderboard_file ="alle_stemmene.json"
+partier = ["ap","krf","mdg","frp","sp","sv","rødt","høyre","venstre"]
 
 if os.path.exists(leaderboard_file): #skjekker om stemme filen finnes
     with open (leaderboard_file,"r") as f: #bruker den riktige filen som "leaderboard" som en read
@@ -23,8 +24,12 @@ def save_leaderboard():
     with open(leaderboard_file, "w") as f:
         json.dump(alle_stemmene, f, indent=4, ensure_ascii=False)
 
+def show_leaderboard():
+    print("\nALLE STEMMENE")
+    for name, stats in alle_stemmene.items():
+        stemmer = stats["stemmer"]
+        print(f"{name}: {stemmer}")
 
-partier = ["ap","krf","mdg","frp","sp","sv","rødt","høyre","venstre"]
 
 def valget():
     stemme = input("Avgi din stemme\n").lower()
@@ -35,3 +40,4 @@ def valget():
     else:
         print("ugyldig parti")
 valget()
+show_leaderboard()
