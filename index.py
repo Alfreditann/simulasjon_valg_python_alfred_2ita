@@ -3,6 +3,8 @@ import os
 import random
 leaderboard_file ="alle_stemmene.json"
 partier = ["ap","krf","mdg","frp","sp","sv","rødt","høyre","venstre"]
+teller = 0
+
 
 if os.path.exists(leaderboard_file): #skjekker om stemme filen finnes
     with open (leaderboard_file,"r") as f: #bruker den riktige filen som "leaderboard" som en read
@@ -31,7 +33,8 @@ def show_leaderboard():#viser leaderboardet. den viser parti navnet og hvor mang
         print(f"{navn}: {stemme_amount}")
 
 def ki_stemme():
-    return random.choice(1,94)
+    return random.randint(1, 94) 
+
 def valget(): #denne variablen kjører valger
     global stemme
     stemme = input("Avgi din stemme\n").lower() #her skriver du hva du vil stemme på
@@ -41,27 +44,37 @@ def valget(): #denne variablen kjører valger
         print("Du stemte på",stemme)
     else:
         print("ugyldig parti") #hvis du skriver ett parti som ikke er i variablen så skriver den "ugyldig"
+
+def registrer_ki_stemme():
+    tall = ki_stemme()
+    if tall in range(1, 5):      
+        alle_stemmene["venstre"] += 1
+    elif tall in range(5, 9):    
+        alle_stemmene["krf"] += 1
+    elif tall in range(9, 14):   
+        alle_stemmene["mdg"] += 1
+    elif tall in range(14, 19):  
+        alle_stemmene["rødt"] += 1
+    elif tall in range(19, 24):  
+        alle_stemmene["sp"] += 1
+    elif tall in range(24, 29):  
+        alle_stemmene["sv"] += 1
+    elif tall in range(29, 43):  
+        alle_stemmene["høyre"] += 1
+    elif tall in range(43, 67):  
+        alle_stemmene["frp"] += 1
+    elif tall in range(67, 95):  
+        alle_stemmene["ap"] += 1
+
+
 def kjør_valget():
     valget()
+    antall = int(input("Hvor mange KI-stemmer vil du generere? "))
+    for _ in range(antall):
+        registrer_ki_stemme()
+    save_leaderboard()
     show_leaderboard()
-    ki_stemme()
-    if ki_stemme() == 1 or 2 or 3 or 4:
-        stemme["venstre"] +=1
-    elif ki_stemme() == 5 or 6 or 7 or 8:
-        stemme["krf"] +=1
-    elif ki_stemme == 9 or 10 or 11 or 12 or 13:
-        stemme["mdg"] +=1
-    elif ki_stemme == 14 or 15 or 16 or 17 or 18:
-        stemme["rødt"] +=1
-    elif ki_stemme == 19 or 20 or 21 or 22 or 23:
-        stemme["sp"] +=1
-    elif ki_stemme == 24 or 25 or 26 or 27 or 28:
-        stemme["sv"] +=1
-    elif ki_stemme == 29 or 30 or 31 or 32 or 33 or 34 or 35 or 36 or 37 or 38 or 39 or 40 or 41 or 42:
-        stemme ["høyre"] +=1
-    elif ki_stemme == 43 or 44 or 45 or 46 or 47 or 48 or 49 or 50 or 51 or 52 or 53 or 54 or 55 or 56 or 57 or 58 or 59 or 60 or 61 or 62 or 63 or 64 or 65 or 66:
-        stemme["frp"] +=1
-    elif ki_stemme == 67 or 68 or 69 or 70 or 71 or 72 or 73 or 74 or 75 or 76 or 77 or 78 or 79 or 80 or 81 or 82 or 83 or 84 or 85 or 86 or 87 or 88 or 89 or 90 or 91 or 92 or 93 or 94:
-        stemme ["ap"] +=1
 
+    
+kjør_valget()
 

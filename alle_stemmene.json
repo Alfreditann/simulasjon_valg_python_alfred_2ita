@@ -1,11 +1,11 @@
 {
-    "ap": 6,
-    "krf": 1,
-    "mdg": 1,
+    "ap": 0,
+    "krf": 0,
+    "mdg": 0,
     "frp": 0,
     "sp": 0,
     "sv": 0,
     "rødt": 0,
     "høyre": 0,
-    "venstre": 0
+    "venstre": 1
 }
