@@ -1,10 +1,13 @@
 import json
 import os
 import random
+import math
 leaderboard_file ="alle_stemmene.json"
 partier = ["ap","krf","mdg","frp","sp","sv","rødt","høyre","venstre"]
 teller = 0
-
+fylker = ["Akershus","Buskerud", "Finnmark","Innlandet","Møre og Romsal","Oslo","Rogaland","Telemark","Trøndelag","Vestfold","Vestland","Viken og Østfold"]
+mandater = 150
+mandaterPrFylke = mandater / len(fylker)
 
 if os.path.exists(leaderboard_file): #skjekker om stemme filen finnes
     with open (leaderboard_file,"r") as f: #bruker den riktige filen som "leaderboard" som en read
@@ -63,18 +66,56 @@ def registrer_ki_stemme():
         alle_stemmene["høyre"] += 1
     elif tall in range(43, 67):  
         alle_stemmene["frp"] += 1
-    elif tall in range(67, 95):  
+    elif tall in range(67, 94):  
         alle_stemmene["ap"] += 1
+
+def prosentStemmer():
+    total = sum(alle_stemmene.values())
+    for parti, antall in alle_stemmene.items():
+       prosent = (antall / total) * 100
+       print(f"{parti}: {prosent:.1f}%")
+ 
+def beregeMandater():
+    # tildelt_mandat =[]
+    # stemmer = dict(sorted(alle_stemmene.items(), key=lambda item: item[1], reverse=True))
+    # for navn, stemme_amount in stemmer.items():
+    #     stemmer[navn] = stemme_amount/1.4
+        
+    
+    # for _ in range(mandater):
+        # stemmer = dict(sorted(stemmer.items(), key=lambda item: item[1], reverse=True))
+        # first_item = next(iter(stemmer.items()))
+        # first_key, first_value = first_item
+       
+        # if(first_key in tildelt_mandat):
+        #     tildelt_mandat[first_key] += 1
+        #     stemmer[first_key] = first_value / 
+        # else:
+        #     tildelt_mandat[first_key] = 1
+        #     stemmer[first_key] = first_value / 3
+
+        # print(tildelt_mandat)
+
+    
+    
+
+
+
+
+     total = sum(alle_stemmene.values())
+     for navn, stemme_amount in alle_stemmene.items():
+         print(f"{navn} fikk: {round(mandater*(stemme_amount/total))} mandater!")
 
 
 def kjør_valget():
     valget()
+    global antall
     antall = int(input("Hvor mange KI-stemmer vil du generere? "))
     for _ in range(antall):
         registrer_ki_stemme()
     save_leaderboard()
-    show_leaderboard()
+    prosentStemmer()
 
     
-kjør_valget()
+beregeMandater()
 
