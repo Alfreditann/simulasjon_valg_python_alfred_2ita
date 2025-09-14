@@ -35,7 +35,7 @@ def show_leaderboard():#viser leaderboardet. den viser parti navnet og hvor mang
     for navn, stemme_amount in alle_stemmene.items():
         print(f"{navn}: {stemme_amount}")
 
-def ki_stemme():
+def ki_stemme(): #velger random parti
     return random.randint(1, 94) 
 
 def valget(): #denne variablen kjører valger
@@ -48,7 +48,7 @@ def valget(): #denne variablen kjører valger
     else:
         print("ugyldig parti") #hvis du skriver ett parti som ikke er i variablen så skriver den "ugyldig"
 
-def registrer_ki_stemme():
+def registrer_ki_stemme():#her bruker den outputen til ki_stemme og velger random valg (eks. venstre er 3.7% sjangse for å bli valgt)
     tall = ki_stemme()
     if tall in range(1, 5):      
         alle_stemmene["venstre"] += 1
@@ -69,13 +69,20 @@ def registrer_ki_stemme():
     elif tall in range(67, 94):  
         alle_stemmene["ap"] += 1
 
-def prosentStemmer():
+def prosentStemmer():#gjør om stemmene til prosent
     total = sum(alle_stemmene.values())
     for parti, antall in alle_stemmene.items():
        prosent = (antall / total) * 100
        print(f"{parti}: {prosent:.1f}%")
  
-def beregeMandater():
+def beregeMandater():#regner ut hvor mange mandater partiende får
+    total = sum(alle_stemmene.values())
+    for navn, stemme_amount in alle_stemmene.items():
+        print(f"{navn} fikk: {round(mandater*(stemme_amount/total))} mandater!")
+
+
+
+
     # tildelt_mandat =[]
     # stemmer = dict(sorted(alle_stemmene.items(), key=lambda item: item[1], reverse=True))
     # for navn, stemme_amount in stemmer.items():
@@ -95,27 +102,18 @@ def beregeMandater():
         #     stemmer[first_key] = first_value / 3
 
         # print(tildelt_mandat)
-
-    
-    
+     
 
 
-
-
-     total = sum(alle_stemmene.values())
-     for navn, stemme_amount in alle_stemmene.items():
-         print(f"{navn} fikk: {round(mandater*(stemme_amount/total))} mandater!")
-
-
-def kjør_valget():
+def kjør_valget():#kjører valget
     valget()
     global antall
-    antall = int(input("Hvor mange KI-stemmer vil du generere? "))
+    antall = int(input("Hvor mange KI-stemmer vil du generere? "))#skriv hvor mange "Ki" stemmer du vil ha
     for _ in range(antall):
         registrer_ki_stemme()
     save_leaderboard()
     prosentStemmer()
 
-    
+kjør_valget()
 beregeMandater()
 
