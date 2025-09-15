@@ -1,17 +1,24 @@
 import json
 import os
 import random
-import math
 leaderboard_file ="alle_stemmene.json"
 partier = ["ap","krf","mdg","frp","sp","sv","rødt","høyre","venstre"]
-teller = 0
-fylker = ["Akershus","Buskerud", "Finnmark","Innlandet","Møre og Romsal","Oslo","Rogaland","Telemark","Trøndelag","Vestfold","Vestland","Viken og Østfold"]
 mandater = 150
-mandaterPrFylke = mandater / len(fylker)
+rødgrønn = []
+blå = []
+myfile = "myfile.txt"
 
 if os.path.exists(leaderboard_file): #skjekker om stemme filen finnes
     with open (leaderboard_file,"r") as f: #bruker den riktige filen som "leaderboard" som en read
         alle_stemmene = json.load(f) #loader json filen
+    with open(myfile, "a", encoding="utf-8") as f:#den "flytter" alle_stemmene.json elemtene til en ny textfil og så blir den resetet og encoding gjør at æøå kan brukes i filen
+        f.write("----Resultater----\n")
+        for navn, stemmer in alle_stemmene.items():
+            f.write(f"{navn}:{stemmer}\n")
+        f.write("\n")
+    alle_stemmene = {p: 0 for p in partier}
+    with open (leaderboard_file, "w", encoding="utf-8") as f:
+        json.dump(alle_stemmene,f, indent= 4, ensure_ascii=False)
 else: #hvis json filen ikke finnes så lager den en.
     alle_stemmene = {
         "ap": 0,
@@ -24,6 +31,7 @@ else: #hvis json filen ikke finnes så lager den en.
         "høyre": 0,
         "venstre": 0
     }
+
 
 
 def save_leaderboard(): #lagrer leaderboardet av stemmende
@@ -52,35 +60,65 @@ def registrer_ki_stemme():#her bruker den outputen til ki_stemme og velger rando
     tall = ki_stemme()
     if tall in range(1, 5):      
         alle_stemmene["venstre"] += 1
+        blå.append("venstre")
     elif tall in range(5, 9):    
         alle_stemmene["krf"] += 1
+        blå.append("krf")
     elif tall in range(9, 14):   
         alle_stemmene["mdg"] += 1
+        rødgrønn.append("mdg")
     elif tall in range(14, 19):  
         alle_stemmene["rødt"] += 1
+        rødgrønn.append("rødt")
     elif tall in range(19, 24):  
         alle_stemmene["sp"] += 1
+        rødgrønn.append("sp")
     elif tall in range(24, 29):  
         alle_stemmene["sv"] += 1
+        rødgrønn.append("sv")
     elif tall in range(29, 43):  
         alle_stemmene["høyre"] += 1
+        blå.append("høyre")
     elif tall in range(43, 67):  
         alle_stemmene["frp"] += 1
+        blå.append("frp")
     elif tall in range(67, 94):  
         alle_stemmene["ap"] += 1
+        rødgrønn.append("ap")
 
 def prosentStemmer():#gjør om stemmene til prosent
     total = sum(alle_stemmene.values())
     for parti, antall in alle_stemmene.items():
        prosent = (antall / total) * 100
-       print(f"{parti}: {prosent:.1f}%")
+       print(f"{parti}: {prosent:.2f}%")
  
 def beregeMandater():#regner ut hvor mange mandater partiende får
     total = sum(alle_stemmene.values())
     for navn, stemme_amount in alle_stemmene.items():
         print(f"{navn} fikk: {round(mandater*(stemme_amount/total))} mandater!")
 
+def koalisjoner(): #hvis partier er størst så lager det koalison med de andre partiene.
+    biggest_key = max(alle_stemmene, key=alle_stemmene.get)
+    if biggest_key == "ap":
+        print("Det blir en rødgrønn koalisjon")
+    elif biggest_key == "frp":
+        print("Det blir en blå koalisjon")
+    if biggest_key == "mdg":
+        print("Det blir en rødgrønn koalisjon")
+    elif biggest_key == "høyre":
+        print("Det blir en blå koalisjon")
+    if biggest_key == "sp":
+        print("Det blir en rødgrønn koalisjon")
+    elif biggest_key == "krf":
+        print("Det blir en blå koalisjon")
+    if biggest_key == "sv":
+        print("Det blir en rødgrønn koalisjon")
+    elif biggest_key == "venstre":
+        print("Det blir en blå koalisjon")
+    elif biggest_key == "rødt":
+        print("Det blir en rødgrønn koalisjon")
 
+    
 
 
     # tildelt_mandat =[]
@@ -116,4 +154,5 @@ def kjør_valget():#kjører valget
 
 kjør_valget()
 beregeMandater()
+koalisjoner()
 
