@@ -20,3 +20,25 @@ rødt:6
 høyre:9
 venstre:3
 
+----Resultater----
+ap:33
+krf:1
+mdg:4
+frp:23
+sp:6
+sv:7
+rødt:2
+høyre:16
+venstre:9
+
+----Resultater----
+ap:34
+krf:4
+mdg:4
+frp:23
+sp:4
+sv:3
+rødt:5
+høyre:20
+venstre:4
+
